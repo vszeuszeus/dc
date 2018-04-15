@@ -77401,6 +77401,44 @@ if ($('#bodyD').length > 0) {
     });
 }
 
+if ($("#testEditor").length > 0) {
+    var testEditor = new Vue({
+        el: '#testEditor',
+        data: {
+            categories: phpToVueData.categories,
+            lectures: [],
+            titleField: "",
+            categoryField: "",
+            lectureField: "",
+            typeField: 1,
+            createQuestion: false
+        },
+        watch: {
+            categoryField: function categoryField() {
+                var _this = this;
+
+                if (this.typeField) {
+                    axios({
+                        method: 'get',
+                        url: '/lectures/getByCategory/' + this.categoryField
+                    }).then(function (response) {
+                        _this.lectures = response.data;
+                        _this.lectureField = "";
+                    }).catch(function (error) {
+                        alert(error);
+                        _this.categoryField = "";
+                    });
+                }
+            }
+        },
+        mounted: function mounted() {
+            console.log('lister mounted');
+        },
+
+        methods: {}
+    });
+}
+
 /***/ }),
 
 /***/ "./resources/assets/js/bootstrap.js":

@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::group(['prefix' => 'lectures'], function(){
         Route::get('searcher', 'LectureController@search');
+        Route::get('getByCategory/{id}', 'LectureController@getByCategory');
         Route::delete('destroyWeb/{id}', 'LectureController@destroyWeb')->name('lectures.destroyWeb');
     });
     Route::resource('lectures', 'LectureController');

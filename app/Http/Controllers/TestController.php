@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\LectureCategory;
 
 class TestController extends Controller
 {
@@ -23,7 +24,9 @@ class TestController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.tests.create', ['data' => [
+            'categories' => LectureCategory::all()
+        ]]);
     }
 
     /**

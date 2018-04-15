@@ -207,4 +207,41 @@ if($('#bodyD').length > 0) {
     })
 }
 
+if ($("#testEditor").length > 0) {
+    const testEditor = new Vue({
+        el: '#testEditor',
+        data: {
+            categories: phpToVueData.categories,
+            lectures: [],
+            titleField: "",
+            categoryField: "",
+            lectureField: "",
+            typeField: 1,
+            createQuestion: false
+        },
+        watch: {
+            categoryField: function(){
+                if(this.typeField){
+                    axios({
+                        method: 'get',
+                        url: '/lectures/getByCategory/' + this.categoryField
+                    })
+                        .then(response => {
+                            this.lectures = response.data;
+                            this.lectureField = "";
+                        })
+                        .catch(error => {
+                            alert(error);
+                            this.categoryField = "";
+                        });
+                }
+            }
+        },
+        mounted() {
+            console.log('lister mounted');
+        },
+        methods: {
 
+        }
+    });
+}

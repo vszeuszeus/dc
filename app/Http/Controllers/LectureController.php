@@ -143,4 +143,10 @@ class LectureController extends Controller
             ->paginate(15);
     }
 
+    public function getByCategory($id){
+
+        return Lecture::where('lecture_category_id', $id)->get();
+
+    }
+
 }
