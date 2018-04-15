@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\LectureCategory;
 use Illuminate\Http\Request;
 use App\Lecture;
 use App\Test;
@@ -25,7 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $categories = LectureCategory::with('lectures', 'tests')->paginate(15);
+        return view('home', ['categories' => $categories]);
     }
 
     public function readLecture($id){
@@ -39,6 +41,12 @@ class HomeController extends Controller
 
         //$test = Test::with('questions.answers', 'testable')->findOrFail($id);
         return view('home.beginTest');//, ['test' => $test]);
+
+    }
+
+    public function getCertificate(){
+
+        return "vot tebe certificate";
 
     }
 }

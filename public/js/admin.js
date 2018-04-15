@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -77199,7 +77199,7 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/app.js":
+/***/ "./resources/assets/js/admin.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -77228,9 +77228,177 @@ Vue.component('lister-component', __webpack_require__("./resources/assets/js/com
 Vue.component('lecture-list', __webpack_require__("./resources/assets/js/components/admin/LectureList.vue"));
 
 if ($('#app').length > 0) {
-  var app = new Vue({
-    el: '#app'
-  });
+    var app = new Vue({
+        el: '#app'
+    });
+}
+
+if ($("#lister").length > 0) {
+    var lister = new Vue({
+        el: '#lister',
+        data: {
+            listData: phpToVueData.listData,
+            model: phpToVueData.model,
+            name: phpToVueData.name,
+            finalCaption: "",
+            finalCaptionClass: ""
+        },
+        mounted: function mounted() {
+            console.log('lister mounted');
+        },
+
+        methods: {
+            dismissAlert: function dismissAlert() {
+                this.finalCaption = "";
+            }
+        }
+    });
+}
+
+if ($("#lectures").length > 0) {
+    var lectures = new Vue({
+        el: '#lectures',
+        data: {
+            paginateData: {
+                current_page: 1,
+                data: [],
+                first_page_url: "",
+                from: null,
+                last_page: 1,
+                last_page_url: "",
+                next_page_url: null,
+                path: "",
+                per_page: 15,
+                prev_page_url: null,
+                to: null,
+                total: 0
+            },
+            titleField: "",
+            createdAtField: "",
+            categoryField: "",
+            searchCaption: "Укажите параметры поиска для зароса!",
+            searchCaptionClases: "alert alert-info",
+            finalCaption: "",
+            categories: backToFront.categories
+        },
+        computed: {
+            lectures: function lectures() {
+                return this.paginateData.data;
+            }
+        },
+        watch: {
+            titleField: function titleField() {
+                this.startSearch();
+            },
+            createdAtField: function createdAtField() {
+                this.startSearch();
+            },
+            categoryField: function categoryField() {
+                this.startSearch();
+            }
+        },
+        methods: {
+
+            startSearch: function startSearch() {
+                this.searchCaptionClases = "alert alert-info";
+                this.searchCaption = 'Ожидаю окончания ввода';
+                this.getSearchResult();
+            },
+
+            deleteModel: function deleteModel(model) {
+                this.paginateData.data = this.paginateData.data.filter(function (item) {
+                    return item.id !== model.id;
+                });
+                startAlert(this, 'Лекция удалена', 'success');
+            },
+
+            getSearchResult: _.debounce(function () {
+                if (!this.titleField && !this.createdAtField && !this.categoryField) {
+                    this.paginateData.data = [];
+                    this.searchCaptionClases = 'alert alert-info';
+                    this.searchCaption = "Укажите параметры поиска, чтобы начать просмотр!";
+                    return;
+                }
+                this.searchCaption = "Ожидайте ответ...";
+
+                this.uploadData();
+            }, 700),
+
+            uploadData: function uploadData() {
+                var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+
+                var vm = this;
+                var baseUrl = '/lectures/searcher?' + 'title_field=' + vm.titleField + '&created_at_field=' + vm.createdAtField + '&category_field=' + vm.categoryField + url;
+
+                axios.get(baseUrl).then(function (response) {
+                    vm.paginateData = response.data;
+                    if (response.data.data.length > 0) {
+                        vm.reFind = true;
+                        vm.searchCaptionClases = 'alert alert-success';
+                        if (response.data.last_page === 1) {
+                            vm.searchCaption = "Ответ получен. Всего результатов: " + response.data.data.length + ". ";
+                        } else {
+                            vm.searchCaption = "Ответ получен. Показано c " + response.data.from + " по " + (response.data.from + response.data.data.length - 1) + " из " + response.data.total;
+                        }
+                    } else {
+                        vm.searchCaptionClases = 'alert alert-warning';
+                        vm.searchCaption = 'Попробуйте другие варианты поиска.';
+                    }
+                }).catch(function (error) {
+                    alert('Ошибка! Не могу связаться с API. Попробуйте заного.' + error);
+                });
+            },
+
+            getData: function getData(param, page) {
+                this.searchCaption = "Ожидайте ответ...";
+                var url = "";
+                switch (param) {
+                    case 'prev':
+                        url += '&page=' + (this.paginateData.current_page - 1);
+                        break;
+                    case 'next':
+                        url += '&page=' + (this.paginateData.current_page + 1);
+                        break;
+                    default:
+                        url += '&page=' + page;
+                        break;
+                }
+                this.uploadData(url);
+            },
+
+            dismissAlert: function dismissAlert() {
+                this.finalCaption = "";
+            }
+        },
+        mounted: function mounted() {
+            var vm = this;
+            $('#createdAtField').datepicker({
+                position: 'bottom left',
+                autoClose: true,
+                dateFormat: 'yyyy-mm-dd',
+                range: true,
+                toggleSelected: false,
+                onSelect: function onSelect(fn, date) {
+                    vm.createdAtField = fn;
+                }
+            });
+        },
+        updated: function updated() {}
+    });
+}
+
+window.startAlert = function (vueObject, caption, type) {
+    vueObject.finalCaption = caption;
+    vueObject.finalCaptionClass = type;
+    setTimeout(function () {
+        vueObject.dismissAlert();
+    }, 5000);
+};
+
+if ($('#bodyD').length > 0) {
+    tinymce.init({
+        selector: '#bodyD'
+    });
 }
 
 /***/ }),
@@ -77445,26 +77613,10 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ "./resources/assets/sass/admin.scss":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "./resources/assets/sass/app.scss":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 0:
+/***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__("./resources/assets/js/app.js");
-__webpack_require__("./resources/assets/sass/app.scss");
-module.exports = __webpack_require__("./resources/assets/sass/admin.scss");
+module.exports = __webpack_require__("./resources/assets/js/admin.js");
 
 
 /***/ })
