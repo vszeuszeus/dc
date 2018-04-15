@@ -11,6 +11,8 @@ window.Vue = require('vue');
 
 require('tinymce');
 require('tinymce/themes/modern/theme.min.js');
+require('air-datepicker');
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -19,6 +21,7 @@ require('tinymce/themes/modern/theme.min.js');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('lister-component', require('./components/admin/ListerComponent.vue'));
+Vue.component('lecture-list', require('./components/admin/LectureList.vue'));
 
 if($('#app').length > 0) {
     const app = new Vue({
@@ -74,7 +77,7 @@ if ($("#lectures").length > 0) {
             categories: backToFront.categories,
         },
         computed: {
-            orders: function () {
+            lectures: function () {
                 return this.paginateData.data;
             },
         },

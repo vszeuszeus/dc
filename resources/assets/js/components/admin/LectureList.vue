@@ -16,10 +16,10 @@
                             <span>{{modelNow.created_at}}</span>
                         </div>
                         <div class="col-lg-2">
-                            <a :href="'/lectures/' + modelNow.id" class="btn btn-default" style="padding:2px 6px;"
+                            <a target="_blank" :href="'/lectures/' + modelNow.id" class="btn btn-primary" style="padding:2px 6px;"
                                title="Открыть"><i
                                     class="fa fa-external-link"></i></a>
-                            <a :href="'/lectures/' + modelNow.id + '/edit'" class="btn btn-default" style="padding:2px 6px;"
+                            <a target="_blank" :href="'/lectures/' + modelNow.id + '/edit'" class="btn btn-primary" style="padding:2px 6px;"
                                     title="Редактировать"><i
                                     class="fa fa-edit"></i></a>
                             <button v-on:click="deleteModel(modelNow)" style="padding:2px 6px;"
@@ -39,7 +39,7 @@
     export default {
         props: ['lectures'],
         data: function () {
-
+            return {}
         },
         computed: {
             renderModels: function () {
@@ -70,7 +70,7 @@
 </script>
 <style>
     .clientId {
-        font-size: 30px;
+        font-size: 22px;
     }
 
     .titleTable {

@@ -11,4 +11,9 @@ class Test extends Model
     public function testable(){
         return $this->morphTo();
     }
+
+    public function questions(){
+        return $this->hasMany('questions');
+    }
+
 }

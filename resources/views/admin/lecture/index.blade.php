@@ -51,7 +51,7 @@
                                 </div>
                             </div>
                             <p :class="searchCaptionClases">@{{searchCaption}}</p>
-                            <lection-list :lections="lections"></lection-list>
+                            <lecture-list :lectures="lectures"></lecture-list>
                             <template v-if="((paginateData.total > paginateData.per_page) && (paginateData.total > 0))">
                                 <div class="row">
                                     <div class="col-lg-12">

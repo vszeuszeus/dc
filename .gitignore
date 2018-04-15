@@ -15,5 +15,5 @@ yarn-error.log
 /error.log
 /.env
 /public/css/app.js
-/public/js/app.js
+/public/js/app.css
 /public/mix-manifest.js

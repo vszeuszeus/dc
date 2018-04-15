@@ -65,7 +65,10 @@ class LectureController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.lecture.edit', ['lecture' => Lecture::findOrFail($id)]);
+        return view('admin.lecture.edit', [
+            'lecture' => Lecture::findOrFail($id),
+            'categories' => LectureCategory::all()
+        ]);
     }
 
     /**
@@ -80,11 +83,11 @@ class LectureController extends Controller
 
         $lecture = Lecture::findOrFail($id);
 
-        $lecture->fill($request);
+        $lecture->fill($request->all());
 
         $lecture->save();
 
-        return redirect()->to(route('lecture.show', $id))->with('status', 'Лекция отредактрована');
+        return redirect()->to(route('lectures.show', $id))->with('status', 'Лекция отредактрована');
     }
 
     /**

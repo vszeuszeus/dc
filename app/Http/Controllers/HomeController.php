@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Lecture;
+use App\Test;
 
 class HomeController extends Controller
 {
@@ -13,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+
     }
 
     /**
@@ -24,5 +26,19 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function readLecture($id){
+
+        $lecture = Lecture::with('tests')->findOrFail($id);
+        return view('home.readLecture', ['lecture' => $lecture]);
+
+    }
+
+    public function beginTest($id){
+
+        //$test = Test::with('questions.answers', 'testable')->findOrFail($id);
+        return view('home.beginTest');//, ['test' => $test]);
+
     }
 }
