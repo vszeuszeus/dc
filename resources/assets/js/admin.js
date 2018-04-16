@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -13,6 +12,17 @@ require('tinymce');
 require('tinymce/themes/modern/theme.min.js');
 require('air-datepicker');
 
+window.Vee = require('vee-validate');
+window.VeeDictRU = require('vee-validate/dist/locale/ru');
+
+Vue.use(Vee, {
+    locale: 'ru',
+    dictionary: {
+        ru: {
+            messages: VeeDictRU
+        }
+    }
+});
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -23,7 +33,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 Vue.component('lister-component', require('./components/admin/ListerComponent.vue'));
 Vue.component('lecture-list', require('./components/admin/LectureList.vue'));
 
-if($('#app').length > 0) {
+if ($('#app').length > 0) {
     const app = new Vue({
         el: '#app'
     });
@@ -43,7 +53,7 @@ if ($("#lister").length > 0) {
             console.log('lister mounted');
         },
         methods: {
-            dismissAlert: function (){
+            dismissAlert: function () {
                 this.finalCaption = "";
             }
         }
@@ -170,7 +180,6 @@ if ($("#lectures").length > 0) {
                 }
                 this.uploadData(url);
             },
-
             dismissAlert: function () {
                 this.finalCaption = "";
             }
@@ -193,35 +202,56 @@ if ($("#lectures").length > 0) {
     });
 }
 
-window.startAlert = function(vueObject, caption, type){
+window.startAlert = function (vueObject, caption, type) {
     vueObject.finalCaption = caption;
     vueObject.finalCaptionClass = type;
-    setTimeout(() => {
+    if (window.alertTImer) {
+        clearTimeout(window.alertTImer);
+    }
+    window.alertTImer = setTimeout(() => {
         vueObject.dismissAlert();
     }, 5000);
 };
 
-if($('#bodyD').length > 0) {
+if ($('#bodyD').length > 0) {
     tinymce.init({
         selector: '#bodyD'
     })
 }
 
 if ($("#testEditor").length > 0) {
+    let testEditorInit = function(){
+        return (phpToVueData.test) ? phpToVueData.test : {
+            id: false,
+            title: "",
+            testable: false,
+            questions: []
+        }
+    };
     const testEditor = new Vue({
         el: '#testEditor',
         data: {
             categories: phpToVueData.categories,
             lectures: [],
+            test: testEditorInit(),
             titleField: "",
             categoryField: "",
             lectureField: "",
             typeField: 1,
-            createQuestion: false
+            step: 1,
+            createQuestion: false,
+            answerInput: "",
+            questionTitle: "",
+            toAddAnswers: [],
+            trueAnswer: false,
+            editIndex: 0,
+            finalCaption: "",
+            modalType: "",
+            editAnswerError: false
         },
         watch: {
-            categoryField: function(){
-                if(this.typeField){
+            categoryField: function () {
+                if (this.typeField) {
                     axios({
                         method: 'get',
                         url: '/lectures/getByCategory/' + this.categoryField
@@ -241,7 +271,101 @@ if ($("#testEditor").length > 0) {
             console.log('lister mounted');
         },
         methods: {
+            moveToStep2: function(){
+                let vm = this;
+                vm.$validator.validateAll().then(result=> {
+                    if (!result) return;
+                    axios({
+                        method: (!vm.test.id) ? 'post' : 'put',
+                        url: '/tests' + ((!vm.test.id) ? "" : vm.test.id),
+                        data: {
+                            title: vm.titleField,
+                            testable_id: (vm.typeField === 1) ? vm.categoryField : vm.lectureField,
+                            testable_type: (vm.typeField === 1) ? "App\\LectureCategory" : "App\\Lecture"
+                        }
+                    })
+                        .then( response => {
+                            vm.step = 2;
+                        })
+                        .catch( error => {
+                            alert(error);
+                        });
 
+                });
+            },
+            clearAnswerFields: function () {
+                this.answerInput = "";
+                this.trueAnswer = false;
+                this.editAnswerError = false;
+            },
+            addQuestion: function () {
+                this.createQuestion = !this.createQuestion;
+                this.questionTitle = "";
+                this.toAddAnswers = [];
+            },
+            addAnswer: function () {
+                this.modalType = "createToAdd";
+                $('#answerModal').modal('show');
+            },
+            cancelAddAnswer: function () {
+                this.clearAnswerFields();
+                $('#answerModal').modal('hide');
+            },
+            storeToAddAnswer: function () {
+                let vm = this;
+                this.$validator.validateAll().then(result=> {
+                    if(!result) return;
+                    if (this.trueAnswer) {
+                        if (this.toAddAnswers.filter(item => {
+                                return (item.trusted === true)
+                            }).length > 0) {
+                            this.editAnswerError = true;
+                            return
+                        }
+                    }
+                    this.toAddAnswers.push({
+                        title: vm.answerInput,
+                        trusted: vm.trueAnswer
+                    });
+                    startAlert(this, 'Ответ добавлен', 'success');
+                    this.clearAnswerFields();
+                    $('#answerModal').modal('hide');
+                });
+            },
+            editToAddAnswer: function (answer, index) {
+                this.answerInput = answer.title;
+                this.trueAnswer = answer.trusted;
+                this.editIndex = index;
+                this.modalType = "editToAdd";
+                $('#answerModal').modal('show');
+            },
+            updateToAddAnswer: function () {
+                let vm = this;
+                this.$validator.validateAll().then(result=> {
+                    if(!result) return;
+                    if (this.trueAnswer) {
+                        if (this.toAddAnswers.filter((item, index) => {
+                                return (item.trusted === true && index !== this.editIndex)
+                            }).length > 0)  {
+                            this.editAnswerError = true;
+                            return
+                        }
+                    }
+                    this.toAddAnswers.splice(this.editIndex, 1, {
+                        title: vm.answerInput,
+                        trusted: vm.trueAnswer
+                    });
+                    $('#answerModal').modal('hide');
+                    startAlert(this, 'Ответ отредактирован', 'warning');
+                    this.clearAnswerFields();
+                });
+            },
+            deleteToAddAnswer: function (index) {
+                this.toAddAnswers.splice(index, 1);
+            },
+            dismissAlert: function () {
+                this.finalCaption = "";
+            }
         }
     });
 }

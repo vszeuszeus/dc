@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\LectureCategory;
+use App\Test;
+use App\Http\Requests\TestRequest;
+
 
 class TestController extends Controller
 {
@@ -14,7 +17,7 @@ class TestController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -35,7 +38,7 @@ class TestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TestRequest $request)
     {
         //
     }
@@ -59,7 +62,10 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.tests.create', ['data' => [
+            'categories' => LectureCategory::all(),
+            'test' => Test::with('testable', 'questions.answers')->findOrFail()
+        ]]);
     }
 
     /**

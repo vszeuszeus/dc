@@ -13,7 +13,7 @@ class TestRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class TestRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|unique:tests,title,' .
+                (($this->input('id')) ? $this->input('id') : "NULL") . ',id|max:255|string',
+            'testable_type' => '',
+            'testable_id' => '',
         ];
     }
 }
