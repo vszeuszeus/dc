@@ -44,9 +44,9 @@ class HomeController extends Controller
 
     }
 
-    public function getCertificate(){
+    public function getCertificate($id){
 
-        return "vot tebe certificate";
+        return view('home.getCertificate');
 
     }
 }

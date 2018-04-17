@@ -18,4 +18,4 @@ yarn-error.log
 /public/css/app.css
 /public/css/admin.css
 /public/js/admin.js
-/public/mix-manifest.js
+/public/mix-manifest.json
