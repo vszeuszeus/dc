@@ -30,7 +30,7 @@ class QuestionRequest extends FormRequest
             'answers' => 'required|array|min:1',
             'answers.*' => 'required|array',
             'answers.*.title' => 'required|distinct|max:255',
-            'answers.*.trusted' => 'required'
+            'answers.*.trusted' => 'required|boolean'
         ];
     }
 }

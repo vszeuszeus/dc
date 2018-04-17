@@ -13,7 +13,7 @@ class AnswerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class AnswerRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|max:255|string',
+            'trusted' => 'required|boolean',
+            'question_id' => 'required|integer|exists:questions,id'
         ];
     }
 }

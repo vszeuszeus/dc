@@ -37,9 +37,10 @@ class QuestionController extends Controller
      */
     public function store(QuestionRequest $request)
     {
-        $question = Question::create($request->all());
+        $question = Question::create($request->except(['answers']));
 
         $answers = [];
+
         foreach($request->answers as $answer):
             $answers[] = new Answer([
                 'title' => $answer['title'],
@@ -84,7 +85,14 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $question = Question::create($request->all());
+
+        $question->fill($question);
+
+        $question->save();
+
+        return $question->load('answers');
+
     }
 
     /**

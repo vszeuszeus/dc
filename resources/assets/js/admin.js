@@ -32,6 +32,7 @@ Vue.use(Vee, {
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('lister-component', require('./components/admin/ListerComponent.vue'));
 Vue.component('lecture-list', require('./components/admin/LectureList.vue'));
+Vue.component('question-list', require('./components/admin/QuestionList.vue'));
 
 if ($('#app').length > 0) {
     const app = new Vue({
@@ -285,7 +286,7 @@ if ($("#testEditor").length > 0) {
                     }
                     axios({
                         method: (!vm.test.id) ? 'post' : 'put',
-                        url: '/tests' + ((!vm.test.id) ? "" : vm.test.id),
+                        url: '/tests' + ((!vm.test.id) ? "" : '/' + vm.test.id),
                         data: {
                             title: vm.test.title,
                             testable_id: (vm.typeField === 1) ? vm.categoryField : vm.lectureField,
@@ -376,7 +377,7 @@ if ($("#testEditor").length > 0) {
             deleteToAddAnswer: function (index) {
                 this.toAddAnswers.splice(index, 1);
             },
-            uploadAndSaveQuestion: function(){
+            uploadQuestion: function(){
                 let vm = this;
                 this.$validator.validateAll({
                     questionTitle: vm.questionTitle
@@ -405,6 +406,7 @@ if ($("#testEditor").length > 0) {
                             vm.test.questions.push(response.data);
                             vm.questionTitle = "";
                             vm.toAddAnswers = [];
+                            vm.addQuestion();
                             startAlert(this, 'Вопрос сохранен', 'success');
                         })
                         .catch( error => {
@@ -421,6 +423,11 @@ if ($("#testEditor").length > 0) {
             },
             disableErrors: function(index){
                 this.serverErrors.splice(index, 1);
+            },
+            deleteQuestion: (question) => {
+                this.test.questions = this.test.questions.filter((item, index) => {
+                    return (item.id !== question.id)
+                })
             }
         }
     });

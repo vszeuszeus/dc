@@ -145,7 +145,7 @@
                                 </div>
                                 <hr>
                                 <div class="form-input">
-                                    <button v-on:click="uploadAndSaveQuestion()" class="btn btn-outline-primary">
+                                    <button v-on:click="uploadQuestion()" class="btn btn-outline-primary">
                                         Сохранить
                                     </button>
                                     <button v-on:click="addQuestion()" class="btn btn-outline-primary">
@@ -153,6 +153,10 @@
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <p>Сохраненые вопросы:</p>
+                            <question-list :questions="test.questions"></question-list>
                         </div>
                     </div>
                 </div>
