@@ -15,59 +15,100 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div v-if="step === 1" class="card">
-                    <div class="card-header">Редактор теста</div>
+                    <div class="card-header">Шаг № 1. Параметры теста</div>
 
                     <div class="card-body">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li style="cursor:pointer;" v-on:click="step = 1" :class="{'breadcrumb-item':true, 'active': (step === 1)}">Параметры теста</li>
+                                <li style="cursor:pointer;" v-on:click="step = 2" v-if="test.id" :class="{'breadcrumb-item':true, 'active': (step === 2)}" aria-current="page">Редактирование вопросов</li>
+                            </ol>
+                        </nav>
                         <div>
+                            <div v-for="(error, index) in serverErrors"
+                                 class="alert alert-warning alert-dismissible fade show" role="alert">
+                                @{{error}}
+                                <button type="button" class="close" v-on:click="disableErrors(index)" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             <div class="form-input">
                                 <label for="title">Наименование</label>
-                                <input v-model="titleField" name="title" type="text" class="form-control"/>
+                                <input v-validate="'required|max:255'" v-model="test.title" name="title" type="text"
+                                       :class="{'form-control': true,'border border-danger': errors.has('answerInput')}"/>
+                                <div v-show="errors.has('title')" class="help alert alert-danger mt-1">@{{ errors.first('title') }}</div>
                             </div>
                             <div class="form-input mt-1">
                                 <label for="">Тип теста</label>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" v-model="typeField" type="radio" id="typeItog"
-                                           value="1">
+                                           :value="1">
                                     <label class="form-check-label" for="typeItog">Итоговый</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" v-model="typeField" type="radio" id="typeLecture"
-                                           value="2">
+                                           :value="2">
                                     <label class="form-check-label" for="typeLecture">Лекционный</label>
                                 </div>
                             </div>
                             <div class="form-input">
                                 <label for="category">Категория</label>
-                                <select :disabled="(categories.length === 0)" class="form-control" v-model="categoryField">
+                                <select v-validate="'required'" :disabled="(categories.length === 0)"
+                                        name="categoryField"
+                                        :class="{'form-control': true,'border border-danger': errors.has('categoryField')}"
+                                        v-model="categoryField">
                                     <option value="">Выберите категорию</option>
                                     <option v-for="category in categories" :value="category.id">@{{ category.title }}
                                     </option>
                                 </select>
+                                <div v-show="errors.has('categoryField')" class="help alert alert-danger mt-1">@{{ errors.first('categoryField') }}</div>
                             </div>
-                            <div v-if="typeField == 2" class="form-input mt-2">
+                            <div v-if="typeField === 2" class="form-input mt-2">
                                 <label for="category">Лекция</label>
-                                <select :disabled="(lectures.length === 0)" class="form-control" v-model="lectureField">
+                                <select v-validate="((typeField == 2) ? 'required' : '')" :disabled="(lectures.length === 0)"
+                                        name="lectureField"
+                                        :class="{'form-control': true,'border border-danger': errors.has('lectureField')}"
+                                        v-model="lectureField">
                                     <option value="">Выберите лекцию</option>
                                     <option v-for="lecture in lectures" :value="lecture.id">@{{ lecture.title }}
                                     </option>
                                 </select>
+                                <div v-show="errors.has('lectureField')" class="help alert alert-danger mt-1">@{{ errors.first('lectureField') }}</div>
                             </div>
                             <hr>
-                            <button class="btn btn-primary">Сохранить и перейти к вопросам</button>
+                            <button v-on:click="moveToStep2" class="btn btn-primary">Сохранить и перейти к вопросам</button>
                         </div>
                     </div>
                 </div>
                 <div v-else-if="step === 2" class="card">
-                    <div class="card-header">Добавление вопросов</div>
+                    <div class="card-header">Шаг № 2. Редактирование вопросов</div>
 
                     <div class="card-body">
-                        <button class="btn btn-primary mb-3" v-on:click="addQuestion()">Добавить вопрос</button>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li style="cursor:pointer;" v-on:click="step = 1" :class="{'breadcrumb-item':true, 'active': (step === 1)}">Параметры теста</li>
+                                <li style="cursor:pointer;" v-on:click="step = 2" v-if="test.id" :class="{'breadcrumb-item':true, 'active': (step === 2)}" aria-current="page">Редактирование вопросов</li>
+                            </ol>
+                        </nav>
+                        <div v-for="(error, index) in serverErrors"
+                             class="alert alert-warning alert-dismissible fade show" role="alert">
+                            @{{error}}
+                            <button type="button" class="close" v-on:click="disableErrors(index)" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <button class="btn btn-primary mt-2 mb-2" v-on:click="addQuestion()">Добавить вопрос</button>
                         <div class="card" v-if="createQuestion">
                             <div class="card-body">
                                 <div class="form-input">
                                     <label for="questionTitle">Вопрос</label>
-                                    <input class="form-control" type="text" name="questionTitle" id="questionTitle"
+                                    <input v-validate="((step === 2) ? 'required|max:254' : '')"
+                                           :class="{'form-control': true,'border border-danger': errors.has('questionTitle')}"
+                                           type="text"
+                                           name="questionTitle"
+                                           id="questionTitle"
                                            v-model="questionTitle"/>
+                                    <div v-show="errors.has('questionTitle')" class="help alert alert-danger mt-1">@{{ errors.first('questionTitle') }}</div>
                                 </div>
                                 <div class="form-input">
                                     <button class="btn btn-default mt-2" v-on:click="addAnswer()">
@@ -104,7 +145,7 @@
                                 </div>
                                 <hr>
                                 <div class="form-input">
-                                    <button class="btn btn-outline-primary">
+                                    <button v-on:click="uploadAndSaveQuestion()" class="btn btn-outline-primary">
                                         Сохранить
                                     </button>
                                     <button v-on:click="addQuestion()" class="btn btn-outline-primary">
@@ -133,7 +174,7 @@
                     <div class="modal-body">
                         <div class="form-input">
                             <label for="answerInput">Введите ответ</label>
-                            <input v-validate="'required|min:1'" type="text" name="answerInput" id="answerInput"
+                            <input v-validate="((step === 2) ? 'required|max:254' : '')" type="text" name="answerInput" id="answerInput"
                                    :class="{'form-control': true,'text-danger': errors.has('answerInput')}"
                                    placeholder="Введите ответ"
                                    v-model="answerInput"/>

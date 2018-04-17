@@ -40,7 +40,9 @@ class TestController extends Controller
      */
     public function store(TestRequest $request)
     {
-        //
+        $test = Test::create($request->all());
+        $test->load('questions.answers');
+        return $test;
     }
 
     /**
@@ -64,7 +66,7 @@ class TestController extends Controller
     {
         return view('admin.tests.create', ['data' => [
             'categories' => LectureCategory::all(),
-            'test' => Test::with('testable', 'questions.answers')->findOrFail()
+            'test' => Test::with('testable', 'questions.answers')->findOrFail($id)
         ]]);
     }
 

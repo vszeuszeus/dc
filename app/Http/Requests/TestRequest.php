@@ -26,8 +26,9 @@ class TestRequest extends FormRequest
         return [
             'title' => 'required|unique:tests,title,' .
                 (($this->input('id')) ? $this->input('id') : "NULL") . ',id|max:255|string',
-            'testable_type' => '',
-            'testable_id' => '',
+            'testable_type' => 'in:App\\LectureCategory,App\\Lecture',
+            'testable_id' => 'required|exists:' . (($this->testable_type == 'App\\LectureCategory') ?
+                    'lecture_categories' : 'lectures') . ',id|integer'
         ];
     }
 }

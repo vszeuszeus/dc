@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
+use App\Http\Requests\QuestionRequest;
+use App\Question;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -32,9 +35,22 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuestionRequest $request)
     {
-        //
+        $question = Question::create($request->all());
+
+        $answers = [];
+        foreach($request->answers as $answer):
+            $answers[] = new Answer([
+                'title' => $answer['title'],
+                'trusted' => $answer['trusted']
+            ]);
+        endforeach;
+
+        $question->answers()->saveMany($answers);
+
+        return $question->load('answers');
+
     }
 
     /**

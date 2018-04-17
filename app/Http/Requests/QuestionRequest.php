@@ -13,7 +13,7 @@ class QuestionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class QuestionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|max:255|unique:questions,title,' .
+                (($this->input('id')) ? $this->input('id') : "NULL") . ',id|max:255|string',
+            'test_id' => 'required|integer|exists:tests,id',
+            'answers' => 'required|array|min:1',
+            'answers.*' => 'required|array',
+            'answers.*.title' => 'required|distinct|max:255',
+            'answers.*.trusted' => 'required'
         ];
     }
 }

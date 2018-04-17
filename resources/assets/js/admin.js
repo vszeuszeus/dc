@@ -89,7 +89,7 @@ if ($("#lectures").length > 0) {
         computed: {
             lectures: function () {
                 return this.paginateData.data;
-            },
+            }
         },
         watch: {
             titleField: function () {
@@ -112,7 +112,7 @@ if ($("#lectures").length > 0) {
 
             deleteModel: function (model) {
                 this.paginateData.data = this.paginateData.data.filter(item => {
-                    return (item.id !== model.id);
+                    return (item.id !== model.id)
                 });
                 startAlert(this, 'Лекция удалена', 'success');
             },
@@ -234,20 +234,25 @@ if ($("#testEditor").length > 0) {
             categories: phpToVueData.categories,
             lectures: [],
             test: testEditorInit(),
-            titleField: "",
             categoryField: "",
             lectureField: "",
             typeField: 1,
+
             step: 1,
+            finalCaption: "",
+            serverErrors: [],
+
             createQuestion: false,
-            answerInput: "",
             questionTitle: "",
             toAddAnswers: [],
+            answerInput: "",
             trueAnswer: false,
             editIndex: 0,
-            finalCaption: "",
             modalType: "",
             editAnswerError: false
+        },
+        computed: {
+
         },
         watch: {
             categoryField: function () {
@@ -274,21 +279,29 @@ if ($("#testEditor").length > 0) {
             moveToStep2: function(){
                 let vm = this;
                 vm.$validator.validateAll().then(result=> {
-                    if (!result) return;
+                    if (!result) {
+                        console.log('no validate');
+                        return;
+                    }
                     axios({
                         method: (!vm.test.id) ? 'post' : 'put',
                         url: '/tests' + ((!vm.test.id) ? "" : vm.test.id),
                         data: {
-                            title: vm.titleField,
+                            title: vm.test.title,
                             testable_id: (vm.typeField === 1) ? vm.categoryField : vm.lectureField,
                             testable_type: (vm.typeField === 1) ? "App\\LectureCategory" : "App\\Lecture"
                         }
                     })
                         .then( response => {
                             vm.step = 2;
+                            vm.test = response.data;
                         })
                         .catch( error => {
-                            alert(error);
+                            switch(error.response.status){
+                                case 422:
+                                    startAlert(vm, 'Ошибка валидации', 'warning');
+                                    vm.serverErrors = error.response.data.errors;
+                            }
                         });
 
                 });
@@ -313,7 +326,7 @@ if ($("#testEditor").length > 0) {
             },
             storeToAddAnswer: function () {
                 let vm = this;
-                this.$validator.validateAll().then(result=> {
+                this.$validator.validate('answerInput', vm.answerInput).then(result=> {
                     if(!result) return;
                     if (this.trueAnswer) {
                         if (this.toAddAnswers.filter(item => {
@@ -341,7 +354,7 @@ if ($("#testEditor").length > 0) {
             },
             updateToAddAnswer: function () {
                 let vm = this;
-                this.$validator.validateAll().then(result=> {
+                this.$validator.validate('answerInput', vm.answerInput).then(result=> {
                     if(!result) return;
                     if (this.trueAnswer) {
                         if (this.toAddAnswers.filter((item, index) => {
@@ -363,8 +376,51 @@ if ($("#testEditor").length > 0) {
             deleteToAddAnswer: function (index) {
                 this.toAddAnswers.splice(index, 1);
             },
+            uploadAndSaveQuestion: function(){
+                let vm = this;
+                this.$validator.validateAll({
+                    questionTitle: vm.questionTitle
+                }).then(result=> {
+                    if(!result) return;
+                    if(vm.toAddAnswers.length < 1){
+                        vm.serverErrors.push('Добавьте ответы к вопросу');
+                        return;
+                    }
+                    if(vm.toAddAnswers.filter(item => {
+                            return item.trusted
+                        }).length === 0){
+                        vm.serverErrors.push('Не указан правильный ответ для вопроса');
+                        return;
+                    }
+                    axios({
+                        method: 'post',
+                        url: '/questions',
+                        data: {
+                            title: vm.questionTitle,
+                            test_id: vm.test.id,
+                            answers: vm.toAddAnswers
+                        }
+                    })
+                        .then( response => {
+                            vm.test.questions.push(response.data);
+                            vm.questionTitle = "";
+                            vm.toAddAnswers = [];
+                            startAlert(this, 'Вопрос сохранен', 'success');
+                        })
+                        .catch( error => {
+                            switch(error.response.status){
+                                case 422:
+                                    startAlert(vm, 'Ошибка валидации', 'warning');
+                                    vm.serverErrors = error.response.data.errors;
+                            }
+                        });
+                });
+            },
             dismissAlert: function () {
                 this.finalCaption = "";
+            },
+            disableErrors: function(index){
+                this.serverErrors.splice(index, 1);
             }
         }
     });
