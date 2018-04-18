@@ -221,23 +221,50 @@ if ($('#bodyD').length > 0) {
 }
 
 if ($("#testEditor").length > 0) {
-    let testEditorInit = function(){
-        return (phpToVueData.test) ? phpToVueData.test : {
-            id: false,
-            title: "",
-            testable: false,
-            questions: []
+    let testEditorInit = function(type){
+        let test = (phpToVueData.test) ? phpToVueData.test : false;
+        switch(type){
+            case 'main':
+                return (test) ? test : {
+                    id: false,
+                    title: "",
+                    testable: false,
+                    questions: []
+                };
+
+            case 'category':
+                return (test)
+                    ? (test.testable_type === 'App\\LectureCategory')
+                        ? test.testable_id
+                        : test.testable.lecture_category_id
+                    : "";
+
+            case 'lecture':
+                return (test)
+                    ? (test.testable_type === 'App\\LectureCategory')
+                        ? ""
+                        : test.testable_id
+                    : "";
+            case 'type':
+                return (test)
+                    ? (test.testable_type === 'App\\LectureCategory')
+                        ? 1
+                        : 2
+                    : 1;
+            default:
+                return 'no_param';
         }
     };
+
     const testEditor = new Vue({
         el: '#testEditor',
         data: {
             categories: phpToVueData.categories,
             lectures: [],
-            test: testEditorInit(),
-            categoryField: "",
-            lectureField: "",
-            typeField: 1,
+            test: testEditorInit('main'),
+            categoryField: testEditorInit('category'),
+            lectureField: testEditorInit('lecture'),
+            typeField: testEditorInit('type'),
 
             step: 1,
             finalCaption: "",

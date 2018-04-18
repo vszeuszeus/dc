@@ -29,11 +29,12 @@
                 </template>
             </div>
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-9">
                     <template v-for="(answer, indexA) in question.answers">
                         <div class="row">
                             <div class="col-lg-1">
-                                <span>{{indexA + 1}}</span>
+                                <span class="text-danger">{{indexA + 1}}</span>
                             </div>
                             <template v-if="editIndex.answer === answer.id">
                                 <div class="col-lg-7">
@@ -57,8 +58,8 @@
 
                                 </div>
                                 <div class="col-lg-2">
-                                    <button v-on:click="updateAnswer(answer)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
-                                    <button v-on:click="cancelEditAnswer()" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                                    <button v-on:click="updateAnswer(answer)" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></button>
+                                    <button v-on:click="cancelEditAnswer()" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button>
                                 </div>
                             </template>
                             <template v-else >
@@ -70,8 +71,8 @@
                                     <span v-else :class="'bg-danger'">неверный</span>
                                 </div>
                                 <div class="col-lg-2">
-                                    <button v-on:click="editAnswer(answer)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
-                                    <button v-on:click="deleteAnswer(index, answer, question)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                                    <button v-on:click="editAnswer(answer)" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></button>
+                                    <button v-on:click="deleteAnswer(index, answer, question)" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button>
                                 </div>
                             </template>
                         </div>
