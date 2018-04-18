@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::resource('questions', 'QuestionController');
 
+    Route::group(['prefix' => 'answers'], function(){
+        Route::put('{id}/setTrusted', 'AnswerController@setTrusted');
+    });
     Route::resource('answers', 'AnswerController');
 
 });

@@ -221,9 +221,9 @@ if ($('#bodyD').length > 0) {
 }
 
 if ($("#testEditor").length > 0) {
-    let testEditorInit = function(type){
+    let testEditorInit = function (type) {
         let test = (phpToVueData.test) ? phpToVueData.test : false;
-        switch(type){
+        switch (type) {
             case 'main':
                 return (test) ? test : {
                     id: false,
@@ -279,34 +279,30 @@ if ($("#testEditor").length > 0) {
             modalType: "",
             editAnswerError: false
         },
-        computed: {
-
-        },
+        computed: {},
         watch: {
             categoryField: function () {
-                if (this.typeField) {
-                    axios({
-                        method: 'get',
-                        url: '/lectures/getByCategory/' + this.categoryField
+                axios({
+                    method: 'get',
+                    url: '/lectures/getByCategory/' + this.categoryField
+                })
+                    .then(response => {
+                        this.lectures = response.data;
+                        this.lectureField = "";
                     })
-                        .then(response => {
-                            this.lectures = response.data;
-                            this.lectureField = "";
-                        })
-                        .catch(error => {
-                            alert(error);
-                            this.categoryField = "";
-                        });
-                }
+                    .catch(error => {
+                        alert(error);
+                        this.categoryField = "";
+                    });
             }
         },
         mounted() {
             console.log('lister mounted');
         },
         methods: {
-            moveToStep2: function(){
+            moveToStep2: function () {
                 let vm = this;
-                vm.$validator.validateAll().then(result=> {
+                vm.$validator.validateAll().then(result => {
                     if (!result) {
                         console.log('no validate');
                         return;
@@ -320,12 +316,12 @@ if ($("#testEditor").length > 0) {
                             testable_type: (vm.typeField === 1) ? "App\\LectureCategory" : "App\\Lecture"
                         }
                     })
-                        .then( response => {
+                        .then(response => {
                             vm.step = 2;
                             vm.test = response.data;
                         })
-                        .catch( error => {
-                            switch(error.response.status){
+                        .catch(error => {
+                            switch (error.response.status) {
                                 case 422:
                                     startAlert(vm, 'Ошибка валидации', 'warning');
                                     vm.serverErrors = error.response.data.errors;
@@ -354,8 +350,8 @@ if ($("#testEditor").length > 0) {
             },
             storeToAddAnswer: function () {
                 let vm = this;
-                this.$validator.validate('answerInput', vm.answerInput).then(result=> {
-                    if(!result) return;
+                this.$validator.validate('answerInput', vm.answerInput).then(result => {
+                    if (!result) return;
                     if (this.trueAnswer) {
                         if (this.toAddAnswers.filter(item => {
                                 return (item.trusted === true)
@@ -368,9 +364,8 @@ if ($("#testEditor").length > 0) {
                         title: vm.answerInput,
                         trusted: vm.trueAnswer
                     });
-                    startAlert(this, 'Ответ добавлен', 'success');
-                    this.clearAnswerFields();
                     $('#answerModal').modal('hide');
+                    this.clearAnswerFields();
                 });
             },
             editToAddAnswer: function (answer, index) {
@@ -382,12 +377,12 @@ if ($("#testEditor").length > 0) {
             },
             updateToAddAnswer: function () {
                 let vm = this;
-                this.$validator.validate('answerInput', vm.answerInput).then(result=> {
-                    if(!result) return;
+                this.$validator.validate('answerInput', vm.answerInput).then(result => {
+                    if (!result) return;
                     if (this.trueAnswer) {
                         if (this.toAddAnswers.filter((item, index) => {
                                 return (item.trusted === true && index !== this.editIndex)
-                            }).length > 0)  {
+                            }).length > 0) {
                             this.editAnswerError = true;
                             return
                         }
@@ -397,27 +392,26 @@ if ($("#testEditor").length > 0) {
                         trusted: vm.trueAnswer
                     });
                     $('#answerModal').modal('hide');
-                    startAlert(this, 'Ответ отредактирован', 'warning');
                     this.clearAnswerFields();
                 });
             },
             deleteToAddAnswer: function (index) {
                 this.toAddAnswers.splice(index, 1);
             },
-            uploadQuestion: function(){
+            uploadQuestion: function () {
                 let vm = this;
                 this.$validator.validateAll({
                     questionTitle: vm.questionTitle
-                }).then(result=> {
-                    if(!result) return;
-                    if(vm.toAddAnswers.length < 1){
-                        vm.serverErrors.push('Добавьте ответы к вопросу');
+                }).then(result => {
+                    if (!result) return;
+                    if (vm.toAddAnswers.length < 1) {
+                        startAlert(vm, 'Добавьте ответы к вопросу', 'warning');
                         return;
                     }
-                    if(vm.toAddAnswers.filter(item => {
+                    if (vm.toAddAnswers.filter(item => {
                             return item.trusted
-                        }).length === 0){
-                        vm.serverErrors.push('Не указан правильный ответ для вопроса');
+                        }).length === 0) {
+                        startAlert(vm, 'Не указан правильный ответ для вопроса', 'warning');
                         return;
                     }
                     axios({
@@ -429,15 +423,15 @@ if ($("#testEditor").length > 0) {
                             answers: vm.toAddAnswers
                         }
                     })
-                        .then( response => {
+                        .then(response => {
                             vm.test.questions.push(response.data);
                             vm.questionTitle = "";
                             vm.toAddAnswers = [];
                             vm.addQuestion();
                             startAlert(this, 'Вопрос сохранен', 'success');
                         })
-                        .catch( error => {
-                            switch(error.response.status){
+                        .catch(error => {
+                            switch (error.response.status) {
                                 case 422:
                                     startAlert(vm, 'Ошибка валидации', 'warning');
                                     vm.serverErrors = error.response.data.errors;
@@ -448,10 +442,10 @@ if ($("#testEditor").length > 0) {
             dismissAlert: function () {
                 this.finalCaption = "";
             },
-            disableErrors: function(index){
+            disableErrors: function (index) {
                 this.serverErrors.splice(index, 1);
             },
-            deleteQuestion: (question) => {
+            deleteQuestion: function(question) {
                 this.test.questions = this.test.questions.filter((item, index) => {
                     return (item.id !== question.id)
                 })

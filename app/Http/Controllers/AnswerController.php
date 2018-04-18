@@ -36,7 +36,7 @@ class AnswerController extends Controller
      */
     public function store(AnswerRequest $request)
     {
-
+        return Answer::create($request->all());
     }
 
     /**
@@ -75,7 +75,27 @@ class AnswerController extends Controller
 
         $answer->fill($request->all());
 
-        return $answer->save();
+        $answer->save();
+
+        return $answer;
+
+    }
+
+    public function setTrusted(AnswerRequest $request, $id)
+    {
+
+        $answer = Answer::findOrFail($id);
+
+        Answer::where('id', $answer->question_id)
+            ->update([
+                'trusted' => false
+            ]);
+
+        $answer->fill($request->all());
+
+        $answer->save();
+
+        return json_encode($answer);
 
     }
 
@@ -87,6 +107,7 @@ class AnswerController extends Controller
      */
     public function destroy($id)
     {
+
         $answer = Answer::findOrFail($id);
 
         $answer->delete();

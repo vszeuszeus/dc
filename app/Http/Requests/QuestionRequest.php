@@ -23,9 +23,10 @@ class QuestionRequest extends FormRequest
      */
     public function rules()
     {
+        dd($this->route('id'));
         return [
             'title' => 'required|max:255|unique:questions,title,' .
-                (($this->input('id')) ? $this->input('id') : "NULL") . ',id|max:255|string',
+                ($this->route('question') ? $this->route('question') : "NULL") . ',id|max:255|string',
             'test_id' => 'required|integer|exists:tests,id',
             'answers' => 'required|array|min:1',
             'answers.*' => 'required|array',

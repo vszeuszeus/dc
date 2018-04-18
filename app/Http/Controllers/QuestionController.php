@@ -87,7 +87,7 @@ class QuestionController extends Controller
     {
         $question = Question::create($request->all());
 
-        $question->fill($question);
+        $question->fill($request->all());
 
         $question->save();
 

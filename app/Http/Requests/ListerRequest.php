@@ -24,7 +24,7 @@ class ListerRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'string|required|max:100|unique:lecture_categories,title,'.(isset($this->id) ? $this->id : 'NULL').',id'
+            'title' => 'string|required|max:100|unique:lecture_categories,title,'.($this->route('lister') ? $this->route('lister') : 'NULL') .',id'
         ];
     }
 }
