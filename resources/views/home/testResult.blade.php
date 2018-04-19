@@ -4,47 +4,19 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="jumbotron">
+                <div class="jumbotron d-flex align-items-center flex-column text-center">
                     <h1 class="display-4">Результаты теста</h1>
-                    <p class="lead">По теме: &laquo; Категория 1. Лекция 1 &raquo;</p>
-                    <hr class="my-4">
+                    <p class="lead">По теме: &laquo; Категория 1. Лекция 1
+                        &raquo;</p>
                     <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between bg-light">
-                            <div class="text-danger">
-                                <h6 class="my-0">Вопрос</h6>
-                                <small>Правильный ответ</small>
-                            </div>
-                            <span class="text-danger"> // ответ, который дал пользователь//</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-light">
-                            <div class="text-danger">
-                                <h6 class="my-0">Вопрос</h6>
-                                <small>Правильный ответ</small>
-                            </div>
-                            <span class="text-danger"> // ответ, который дал пользователь//</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-light">
-                            <div class="text-danger">
-                                <h6 class="my-0">Вопрос</h6>
-                                <small>Правильный ответ</small>
-                            </div>
-                            <span class="text-danger"> // ответ, который дал пользователь//</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-light">
-                            <div class="text-success">
-                                <h6 class="my-0">Вопрос</h6>
-                                <small>Правильный ответ</small>
-                            </div>
-                            <span class="text-success"> // ответ, который дал пользователь//</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Результат</span>
-                            <strong>1 из 4</strong>
-                        </li>
+                        <a href=""
+                           class="list-group-item d-flex flex-column justify-content-center align-items-center box-shadow"
+                           style="width: 256px;height: 256px; border-radius: 50%; color:#212121;">
+                            <h2><strong>1 из 4</strong></h2>
+                            <span class="lead w100 text-center"
+                                  style="font-size: .8rem;">Нажмите, чтобы получить сертификат</span>
+                        </a>
                     </ul>
-                    <p class="lead text-center">
-                        <a class="btn btn-primary btn-lg" href="#" role="button">Получить сертификат</a>
-                    </p>
                 </div>
 
             </div>
