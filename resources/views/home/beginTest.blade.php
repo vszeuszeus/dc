@@ -5,24 +5,44 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Тест</div>
-
-                    <p>сюда время начала<p>
-
-                    <p>сюда время осталось</p>
-
-                    <div>теперь сам тест</div>
-
-                    <div>кнопка сдать тест</div>
-
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">Категория</li>
+                            <li class="breadcrumb-item active" aria-current="page">Лекция</li>
+                            <li class="breadcrumb-item active" aria-current="page">Тест</li>
+                        </ol>
+                    </nav>
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
+                        <div class="card">
+                            <div class="card-header">
+                                Вопрос 1
                             </div>
-                        @endif
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="customRadio1" name="customRadio"
+                                               class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadio1">Ответ 1</label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="customRadio2" name="customRadio"
+                                               class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadio2">Ответ 2</label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="customRadio3" name="customRadio"
+                                               class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadio2">Ответ 3</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
 
-                        You are logged in!
+                        <a href="#" class="btn btn-primary mt-3">Проверить результаты</a>
                     </div>
                 </div>
             </div>

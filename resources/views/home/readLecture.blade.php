@@ -4,20 +4,19 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Лекция</div>
-                    {{$lecture->id}}<br>
-                    {{$lecture->title}}<br>
-                    {{$lecture->category->title}}<br>
-                    {!! $lecture->body !!}
+                <div class="card" id="{{$lecture->id}}">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb" style="margin-bottom: 0;">
+                            <li class="breadcrumb-item active"
+                                aria-current="page">{{$lecture->category->title}}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{$lecture->title}}</li>
+                        </ol>
+                    </nav>
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        You are logged in!
+                        {!! $lecture->body !!}
+                    </div>
+                    <div class="card-body text-center">
+                        <a href="#" class="btn btn-primary">Пройти тест по лекции</a>
                     </div>
                 </div>
             </div>
