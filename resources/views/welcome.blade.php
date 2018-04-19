@@ -42,7 +42,9 @@
 
     <footer class="mastfoot mt-auto">
         <div class="inner">
-            <p>Lorem ipsum dolor sit amet, consectetur.</p>
+            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                All rights reserved
+            </p>
         </div>
     </footer>
 </div>
