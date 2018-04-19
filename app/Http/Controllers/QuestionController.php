@@ -103,6 +103,6 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return json_encode(['result' => Question::findOrFail($id)->delete()]);
     }
 }

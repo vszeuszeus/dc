@@ -145,7 +145,7 @@
                 this.editIndex.answer = 0;
             },
             createAnswer: function (question) {
-                this.storeIndex = question.id
+                this.storeIndex = question.id;
                 this.cancelEditQuestion();
                 this.cancelEditAnswer();
             },
@@ -169,6 +169,7 @@
                         }
                     }).then(r=> {
                         question.answers.push(r.data);
+                        vm.answerTitle = "";
                         vm.cancelCreateAnswer();
                     }).catch(e=> {
                         alert(e);
@@ -222,6 +223,7 @@
                 this.answerTitle = answer.title;
                 this.trustedAnswer = answer.trusted;
                 this.editIndex.answer = answer.id;
+                this.cancelAddAnswer();
             },
             updateAnswer: function (answer) {
                 let vm = this;
@@ -235,7 +237,8 @@
                     }
                 })
                     .then(response => {
-                        answer.title = vm.questionTitle;
+                        answer.title = vm.answerTitle;
+                        vm.answerTitle = "";
                         vm.editIndex.answer = 0;
                         startAlert(vm.$parent, 'Ответ изменен', 'success');
                     })

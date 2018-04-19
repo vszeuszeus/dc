@@ -6,20 +6,24 @@
                     <div class="row">
                         <div style="text-align:center;" class="col-lg-1 mr-0 pr-0"><span
                                 class="clientId align-middle text-primary">{{modelNow.id}}</span></div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <span>{{modelNow.title}}</span>
                         </div>
+                        <div class="col-lg-2">
+                            <span v-if="modelNow.testable_type === 'App\\Lecture'">Лекционный</span>
+                            <span v-else >Итоговый</span>
+                        </div>
                         <div class="col-lg-3">
-                            <span>{{modelNow.category.title}}</span>
+                            <span>{{modelNow.testable.title}}</span>
+                        </div>
+                        <div class="col-lg-1">
+                            <span>{{modelNow.questions.length}}</span>
                         </div>
                         <div class="col-lg-2">
-                            <span>{{modelNow.created_at}}</span>
-                        </div>
-                        <div class="col-lg-2">
-                            <a target="_blank" :href="'/lectures/' + modelNow.id" class="btn btn-primary" style="padding:2px 6px;"
+                            <a target="_blank" :href="'/test/' + modelNow.id" class="btn btn-primary" style="padding:2px 6px;"
                                title="Открыть"><i
                                     class="fa fa-external-link"></i></a>
-                            <a target="_blank" :href="'/lectures/' + modelNow.id + '/edit'" class="btn btn-primary" style="padding:2px 6px;"
+                            <a target="_blank" :href="'/tests/' + modelNow.id + '/edit'" class="btn btn-primary" style="padding:2px 6px;"
                                     title="Редактировать"><i
                                     class="fa fa-edit"></i></a>
                             <button v-on:click="deleteModel(modelNow)" style="padding:2px 6px;"
@@ -31,13 +35,13 @@
             </div>
         </div>
         <div v-else style="text-align: center;">
-            <span style="font-weight:800; font-size:14px;">Пустые параметры поиска!!</span>
+            <span style="font-weight:800; font-size:14px;">Пустые параметры поиска!</span>
         </div>
     </div>
 </template>
 <script>
     export default {
-        props: ['lectures'],
+        props: ['tests'],
         data: function () {
             return {}
         },
@@ -49,10 +53,10 @@
         methods: {
             deleteModel: function (modelNow) {
                 let vm = this;
-                if (confirm('Вы хотите удалить клиента с идентификатором № ' + modelNow.id)) {
+                if (confirm('Вы хотите удалить тест с идентификатором № ' + modelNow.id)) {
                     axios({
                         method: 'delete',
-                        url: '/lectures/' + modelNow.id
+                        url: '/tests/' + modelNow.id
                     })
                         .then(reponse => {
                             vm.$parent.deleteModel(modelNow);

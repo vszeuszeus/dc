@@ -86,9 +86,9 @@ class AnswerController extends Controller
 
         $answer = Answer::findOrFail($id);
 
-        Answer::where('id', $answer->question_id)
+        Answer::where('question_id', $answer->question_id)
             ->update([
-                'trusted' => false
+                'trusted' => 0
             ]);
 
         $answer->fill($request->all());
