@@ -15,7 +15,7 @@
                     <div class="card-body">
                         {!! $lecture->body !!}
                     </div>
-                    <div class="card-body text-center">
+                    <div class="card-footer text-center">
                         <a href="#" class="btn btn-primary">Пройти тест по лекции</a>
                     </div>
                 </div>

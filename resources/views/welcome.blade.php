@@ -16,9 +16,9 @@
 
 <body class="text-center">
 
-<div class="background-image"></div>
+<div class="background-image" style="background-image: url({{ asset('images/cover.jpeg') }});"></div>
 
-<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+<div class="d-flex h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
         <div class="inner">
             <h3 class="masthead-brand">ЦОиВ</h3>

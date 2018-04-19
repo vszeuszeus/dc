@@ -20,9 +20,9 @@
     <!-- Styles -->
     <link href="{{ mix('css/admin.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="bg-dark">
 <div id="admin">
-    <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+    <nav class="navbar navbar-expand-md navbar-light navbar-laravel navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 Панель Администратора

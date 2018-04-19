@@ -36,12 +36,19 @@
             overflow: hidden;
         }
     </style>
-    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-        <div class="col-md-6 p-lg-5 mx-auto my-5">
-            <h1 class="display-4 font-weight-normal">Спасибо за заявку</h1>
-            <p class="lead font-weight-normal">Наши менеджеры в скором времени свяжуться с Вами и проведут полную
-                консультацию.</p>
-            <a class="btn btn-outline-secondary" href="{{ url('/') }}">На главную</a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+                    <div class="p-lg-5 mx-auto my-5">
+                        <h1 class="display-4 font-weight-normal">Спасибо за заявку</h1>
+                        <p class="lead font-weight-normal">Наши менеджеры в скором времени свяжуться с Вами и проведут
+                            полную
+                            консультацию.</p>
+                        <a class="btn btn-outline-secondary" href="{{ url('/') }}">На главную</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
