@@ -49,4 +49,10 @@ class HomeController extends Controller
         return view('home.getCertificate');
 
     }
+
+    public function testResult(){
+
+        return view('home.testResult');
+
+    }
 }
