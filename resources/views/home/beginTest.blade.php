@@ -41,8 +41,9 @@
                                 </li>
                             </ul>
                         </div>
-
-                        <a href="#" class="btn btn-primary mt-3">Проверить результаты</a>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="btn btn-primary">Проверить результаты</a>
                     </div>
                 </div>
             </div>

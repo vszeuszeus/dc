@@ -20,9 +20,9 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="bg-dark">
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+    <nav class="navbar navbar-expand-md navbar-light navbar-laravel navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 ЦОиВ
