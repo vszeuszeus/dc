@@ -36,7 +36,7 @@
                                     <div class="custom-control custom-radio">
                                         <input type="radio" id="customRadio3" name="customRadio"
                                                class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio2">Ответ 3</label>
+                                        <label class="custom-control-label" for="customRadio3">Ответ 3</label>
                                     </div>
                                 </li>
                             </ul>
