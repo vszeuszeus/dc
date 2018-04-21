@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use App\LectureCategory;
 use App\Test;
@@ -17,7 +18,9 @@ class TestController extends Controller
      */
     public function index()
     {
-        return view('')
+        return view('admin.tests.index', ['backToFront' =>
+            ['categories' => LectureCategory::all()]
+        ]);
     }
 
     /**
@@ -99,5 +102,46 @@ class TestController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function search(Request $request){
+
+        $titleField = $request->title_field;
+        $createdField = $request->created_at_field;
+        $categoryField = $request->category_field;
+
+        return Test::with('testable', 'questions')
+            ->when($titleField, function($query) use ($titleField){
+                return $query->where('title', 'LIKE', '%'.$titleField.'%');
+            })
+            ->when($createdField, function($query) use($createdField){
+                $explodedCreated = explode(',',$createdField);
+                switch(count($explodedCreated)){
+                    case 2:
+                        return $query->whereBetween('created_at', [$explodedCreated[0], $explodedCreated[1]]);
+                    case 1:
+                        return $query->where('created_at', '>=', $explodedCreated[0]);
+                    default:
+                        return false;
+                }
+            })
+            ->when($categoryField, function($query) use ($categoryField){
+                return $query->where('testable_id', $categoryField)
+                    ->where('testable_type', 'App\\LectureCategory');
+            })
+            ->paginate(15);
+    }
+
+    public function startTest($request, $test_key = 'not_key'){
+
+        $begin = BeginTest::where('test_key', $test_key)
+            ->where('user_id', $request->user()->id)->with('test')->firstOrFail();
+
+        if(!$begin->result_count){
+            return view('home.beginTest', ['test' => $test]);
+        }
+
+        $test = Test::where('test_key', $test_key)->first();
+
     }
 }

@@ -182,7 +182,7 @@
                                    :class="{'form-control': true,'text-danger': errors.has('answerInput')}"
                                    placeholder="Введите ответ"
                                    v-model="answerInput"/>
-                            <span v-show="errors.has('answerInput')" class="help text-danger">@{{ errors.first('answerInput') }}</span>
+                            <span v-show="errors.has('answerInput')" class="help bg-danger">@{{ errors.first('answerInput') }}</span>
                         </div>
                         <div class="form-check mt-2">
                             <input class="form-check-input" v-model="trueAnswer" type="checkbox" :value="true"

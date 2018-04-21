@@ -20,11 +20,8 @@
                             <span>{{modelNow.questions.length}}</span>
                         </div>
                         <div class="col-lg-2">
-                            <a target="_blank" :href="'/test/' + modelNow.id" class="btn btn-primary" style="padding:2px 6px;"
-                               title="Открыть"><i
-                                    class="fa fa-external-link"></i></a>
                             <a target="_blank" :href="'/tests/' + modelNow.id + '/edit'" class="btn btn-primary" style="padding:2px 6px;"
-                                    title="Редактировать"><i
+                                    title="Редактор теста"><i
                                     class="fa fa-edit"></i></a>
                             <button v-on:click="deleteModel(modelNow)" style="padding:2px 6px;"
                                     class="btn btn-default"><i class="fa fa-times" title="Удалить"></i>
@@ -43,11 +40,13 @@
     export default {
         props: ['tests'],
         data: function () {
-            return {}
+            return {
+
+            }
         },
         computed: {
             renderModels: function () {
-                return this.lectures;
+                return this.tests;
             },
         },
         methods: {

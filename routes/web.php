@@ -38,6 +38,9 @@ Route::group(['middleware' => 'auth'], function (){
     });
     Route::resource('lectures', 'LectureController');
 
+    Route::group(['prefix' => 'tests'], function(){
+        Route::get('searcher', 'TestController@search');
+    });
     Route::resource('tests', 'TestController');
 
     Route::resource('questions', 'QuestionController');

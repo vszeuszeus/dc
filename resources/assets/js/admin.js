@@ -33,6 +33,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 Vue.component('lister-component', require('./components/admin/ListerComponent.vue'));
 Vue.component('lecture-list', require('./components/admin/LectureList.vue'));
 Vue.component('question-list', require('./components/admin/QuestionList.vue'));
+Vue.component('test-list', require('./components/admin/TestList.vue'));
 
 if ($('#app').length > 0) {
     const app = new Vue({
@@ -203,9 +204,9 @@ if ($("#lectures").length > 0) {
     });
 }
 
-if ($("#lectures").length > 0) {
-    const lectures = new Vue({
-        el: '#lectures',
+if ($("#tests").length > 0) {
+    const tests = new Vue({
+        el: '#tests',
         data: {
             paginateData: {
                 current_page: 1,
@@ -226,7 +227,8 @@ if ($("#lectures").length > 0) {
             categoryField: "",
             searchCaption: "Укажите параметры поиска для зароса!",
             searchCaptionClases: "alert alert-info",
-            finalCaption: ""
+            finalCaption: "",
+            categories: backToFront.categories
         },
         computed: {
             tests: function () {
@@ -357,7 +359,8 @@ window.startAlert = function (vueObject, caption, type) {
 
 if ($('#bodyD').length > 0) {
     tinymce.init({
-        selector: '#bodyD'
+        selector: '#bodyD',
+        height: '400px'
     })
 }
 

@@ -16,4 +16,8 @@ class Test extends Model
         return $this->hasMany('App\Question');
     }
 
+    public function begins(){
+        return $this->hasMany('App\BeginTest', 'test_id');
+    }
+
 }

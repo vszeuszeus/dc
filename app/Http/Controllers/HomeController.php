@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\LectureCategory;
+use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use App\Lecture;
 use App\Test;
+use App\TestBegin;
 
 class HomeController extends Controller
 {
@@ -37,10 +39,20 @@ class HomeController extends Controller
 
     }
 
-    public function beginTest($id){
+    public function beginTest($type = 'lecture', $id, $request){
 
-        //$test = Test::with('questions.answers', 'testable')->findOrFail($id);
-        return view('home.beginTest');//, ['test' => $test]);
+        $query_type = ($type === 'lecture') ? 'App\Lecture' : 'App\LectureCategory';
+
+        $test = Test::where('testable_type', $query_type)
+            ->where('testable_id', $id)->firstOrFail();
+
+        $begin = TestBegin::create([
+            'test_id' => $test->id,
+            'user_id' => $request->user()->id,
+            'test_key' => str_random(128)
+        ]);
+
+        return redirect('tests.begin', $begin->test_key);
 
     }
 
@@ -55,4 +67,5 @@ class HomeController extends Controller
         return view('home.testResult');
 
     }
+
 }
