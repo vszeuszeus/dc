@@ -47,7 +47,11 @@ class HomeController extends Controller
         $query_type = ($type === 'lecture') ? 'App\Lecture' : 'App\LectureCategory';
 
         $test = Test::where('testable_type', $query_type)
-            ->where('testable_id', $id)->firstOrFail();
+            ->where('testable_id', $id)->first();
+
+        if(!$test){
+            return redirect()->back()->with('status', 'Тест еще не создан');
+        }
 
         $begin = TestBegin::create([
             'test_id' => $test->id,

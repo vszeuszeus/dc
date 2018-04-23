@@ -6,6 +6,11 @@
             <div class="col-md-8">
                 <div class="card">
                     @include('common.errors')
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                     <form action="{{route('tests.check')}}" method="POST">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">

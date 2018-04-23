@@ -20,7 +20,7 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function (){
 
     Route::group(['prefix' => 'home'], function (){
-        Route::get('/', 'HomeController@index')->name('home');
+        Route::get('/', 'HomeController@index')->name('home')->middleware('home');
         Route::get('/lecture/{id}', 'HomeController@readLecture')->name('home.readLecture');
         Route::get('/test/{type}/begin/{id}', 'HomeController@beginTest')->name('home.beginTest');
         Route::get('/getCertificate/{id}', 'HomeController@getCertificate')->name('home.getCertificate');

@@ -21,6 +21,7 @@ class TestController extends Controller
     public function index()
     {
 
+        $this->authorize('index', new Test());
         return view('admin.tests.index', ['backToFront' =>
             ['categories' => LectureCategory::all()]
         ]);
@@ -34,6 +35,7 @@ class TestController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', new Test());
         return view('admin.tests.create', ['data' => [
             'categories' => LectureCategory::all()
         ]]);
@@ -47,6 +49,7 @@ class TestController extends Controller
      */
     public function store(TestRequest $request)
     {
+        $this->authorize('store', new Test());
         $test = Test::create($request->all());
         $test->load('questions.answers');
         return $test;
@@ -71,6 +74,7 @@ class TestController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('edit', new Test());
         return view('admin.tests.create', ['data' => [
             'categories' => LectureCategory::all(),
             'test' => Test::with('testable', 'questions.answers')->findOrFail($id)
@@ -88,6 +92,8 @@ class TestController extends Controller
     {
 
         $test = Test::findOrFail($id);
+
+        $this->authorize('update', new Test());
 
         $test->fill($request->all());
 

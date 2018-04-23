@@ -4,6 +4,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <div class="card" id="{{$lecture->id}}">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb" style="margin-bottom: 0;">
@@ -16,7 +21,7 @@
                         {!! $lecture->body !!}
                     </div>
                     <div class="card-footer text-center">
-                        <a href="#" class="btn btn-primary">Пройти тест по лекции</a>
+                        <a href="{{route('home.beginTest', ['type' => 'lecture', 'id' => $lecture->id])}}" class="btn btn-primary">Пройти тест по лекции</a>
                     </div>
                 </div>
             </div>

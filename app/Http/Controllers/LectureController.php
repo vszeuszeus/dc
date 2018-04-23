@@ -16,6 +16,7 @@ class LectureController extends Controller
      */
     public function index()
     {
+        $this->authorize('create', new Lecture());
         return view('admin.lecture.index', ['backToFront' =>
             ['categories' => LectureCategory::all()]
         ]);

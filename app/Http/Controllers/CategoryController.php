@@ -16,6 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $this->authorize('create', new LectureCategory());
         return view('admin.lister.index', ['data' => [
             'listData' => LectureCategory::all(),
             'model' => 'categories',
