@@ -18,7 +18,7 @@
                                              aria-label="Button group with nested dropdown">
                                             <div class="btn-group" role="group">
                                                 <button id="btnGroupDrop1" type="button"
-                                                        class="btn btn-secondary dropdown-toggle"
+                                                        class="btn btn-secondary @if(!$category->lectures->count()) disabled @endif dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true"
                                                         aria-expanded="false">
                                                     Лекции
@@ -30,10 +30,21 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-                                            <a href="{{route('home.beginTest', $category->id)}}" type="button"
-                                               class="btn btn-secondary">Итоговый тест</a>
-                                            <a href="{{route('home.getCertificate', $category->id)}}"
-                                               class="btn btn-secondary">Получить сертификат</a>
+                                            @if(!$category->lectures->count())
+                                                <button disabled href="{{route('home.beginTest', ['type' => 'LectureCategory', 'id' => $category->id])}}" type="button"
+                                                   class="btn btn-secondary">Итоговый тест</button>
+                                            @else
+                                                <a href="{{route('home.beginTest', ['type' => 'LectureCategory', 'id' => $category->id])}}" type="button"
+                                                   class="btn btn-secondary">Итоговый тест</a>
+                                            @endif
+
+                                            @if($category->checkPassedTest())
+                                                <a disabled href="{{route('home.getCertificate', $category->id)}}"
+                                                        class="btn btn-secondary">Получить сертификат</a>
+                                            @else
+                                                <button disabled href="{{route('home.getCertificate', $category->id)}}"
+                                                        class="btn btn-secondary">Получить сертификат</button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

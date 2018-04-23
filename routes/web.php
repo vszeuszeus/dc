@@ -22,9 +22,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::group(['prefix' => 'home'], function (){
         Route::get('/', 'HomeController@index')->name('home');
         Route::get('/lecture/{id}', 'HomeController@readLecture')->name('home.readLecture');
-        Route::get('/test/begin/{id}', 'HomeController@beginTest')->name('home.beginTest');
+        Route::get('/test/{type}/begin/{id}', 'HomeController@beginTest')->name('home.beginTest');
         Route::get('/getCertificate/{id}', 'HomeController@getCertificate')->name('home.getCertificate');
-        Route::get('/testResult', 'HomeController@testResult')->name('home.testResult');
     });
 
     Route::get('/admin', 'AdminController@index')->name('admin');
@@ -40,6 +39,9 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::group(['prefix' => 'tests'], function(){
         Route::get('searcher', 'TestController@search');
+        Route::get('begin/{test_key}', 'TestController@begin')->name('tests.begin');
+        Route::post('check', 'TestController@check')->name('tests.check');
+
     });
     Route::resource('tests', 'TestController');
 

@@ -22,12 +22,12 @@ class CreateTableTestBegins extends Migration
             $table->integer('questions_count')->nullable();
             $table->timestamps();
 
-            $table->foreign('test_id')->preferences('id')
+            $table->foreign('test_id')->references('id')
                 ->on('tests')
                 ->onUpdate('cascade')
                 ->onDelete('no action');
 
-            $table->foreign('user_id')->preferences('id')
+            $table->foreign('user_id')->references('id')
                 ->on('users')
                 ->onUpdate('cascade')
                 ->unDelete('no action');

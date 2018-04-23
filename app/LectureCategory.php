@@ -16,4 +16,16 @@ class LectureCategory extends Model
     public function tests(){
         return $this->morphMany('App\Test', 'testable');
     }
+
+    public function checkPassedTest(){
+        $count = 0;
+        foreach($this->tests as $test){
+            foreach ($test->begins as $begin):
+                if($begin->checkResult()){
+                    $count++;
+                }
+            endforeach;
+        }
+        return ($count ? true : false);
+    }
 }

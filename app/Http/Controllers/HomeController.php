@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Lecture;
 use App\Test;
 use App\TestBegin;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -28,7 +29,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $categories = LectureCategory::with('lectures', 'tests')->paginate(15);
+        $categories = LectureCategory::with(['lectures', 'tests','tests.begins' => function($q){
+            $q->where('user_id', Auth::user()->id);
+        }])->paginate(15);
         return view('home', ['categories' => $categories]);
     }
 
@@ -39,7 +42,7 @@ class HomeController extends Controller
 
     }
 
-    public function beginTest($type = 'lecture', $id, $request){
+    public function beginTest($type, $id){
 
         $query_type = ($type === 'lecture') ? 'App\Lecture' : 'App\LectureCategory';
 
@@ -48,17 +51,25 @@ class HomeController extends Controller
 
         $begin = TestBegin::create([
             'test_id' => $test->id,
-            'user_id' => $request->user()->id,
+            'user_id' => Auth::user()->id,
             'test_key' => str_random(128)
         ]);
 
-        return redirect('tests.begin', $begin->test_key);
+        return redirect()->route('tests.begin', $begin->test_key);
 
     }
 
     public function getCertificate($id){
 
-        return view('home.getCertificate');
+        $category = LectureCategory::with(['tests', 'tests.begins' => function($q){
+            $q->where('user_id', Auth::user()->id);
+        }])->findOrFail($id);
+
+        if($category->checkPassedTest()){
+            return view('home.getCertificate');
+        }else{
+            return redirect()->back();
+        }
 
     }
 

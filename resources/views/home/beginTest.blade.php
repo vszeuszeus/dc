@@ -5,46 +5,42 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">Категория</li>
-                            <li class="breadcrumb-item active" aria-current="page">Лекция</li>
-                            <li class="breadcrumb-item active" aria-current="page">Тест</li>
-                        </ol>
-                    </nav>
-                    <div class="card-body">
-                        <div class="card">
-                            <div class="card-header">
-                                Вопрос 1
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio1" name="customRadio"
-                                               class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio1">Ответ 1</label>
+                    @include('common.errors')
+                    <form action="{{route('tests.check')}}" method="POST">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item active" aria-current="page"></li>
+                                <li class="breadcrumb-item active" aria-current="page">Лекция</li>
+                                <li class="breadcrumb-item active" aria-current="page">Тест</li>
+                            </ol>
+                        </nav>
+                        <div class="card-body">
+                                {{csrf_field()}}
+                                <input type="hidden" name="test_id" value="{{$begin->test->id}}"/>
+                                <input type="hidden" name="test_key" value="{{$begin->test_key}}"/>
+                            @foreach($begin->test->questions as $question)
+                                <div class="card mb-2">
+                                    <div class="card-header">
+                                        {{$question->title}}
                                     </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio2" name="customRadio"
-                                               class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio2">Ответ 2</label>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio3" name="customRadio"
-                                               class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio3">Ответ 3</label>
-                                    </div>
-                                </li>
-                            </ul>
+                                    <ul class="list-group list-group-flush">
+                                        @foreach($question->answers as $answer)
+                                            <li class="list-group-item">
+                                                <div class="custom-control custom-radio">
+                                                    <input value="{{$answer->id}}" type="radio" id="answer{{$answer->id}}" name="answers[{{$question->id}}]"
+                                                           class="custom-control-input">
+                                                    <label class="custom-control-label" for="answer{{$answer->id}}">{{ $answer->title }}</label>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
-                    <div class="card-footer text-center">
-                        <a href="#" class="btn btn-primary">Проверить результаты</a>
-                    </div>
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary">Проверить результаты</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

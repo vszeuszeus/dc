@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use App\LectureCategory;
 use App\Test;
 use App\Http\Requests\TestRequest;
+use App\TestBegin;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\TestCheckRequest;
 
 
 class TestController extends Controller
@@ -134,16 +136,50 @@ class TestController extends Controller
             ->paginate(15);
     }
 
-    public function startTest($request, $test_key = 'not_key'){
+    public function begin($test_key = 'not_key'){
 
-        $begin = BeginTest::where('test_key', $test_key)
-            ->where('user_id', $request->user()->id)->with('test')->firstOrFail();
+        $begin = TestBegin::where('test_key', $test_key)
+            ->where('user_id', Auth::user()->id)->firstOrFail();
 
         if(!$begin->result_count){
-            return view('home.beginTest', ['test' => $test]);
+            $begin->load('test.questions.answers');
+            return view('home.beginTest', ['begin' => $begin]);
+        }else{
+            $begin->load('test.testable');
+            return view('home.testResult', ['begin' => $begin]);
         }
 
-        $test = Test::where('test_key', $test_key)->first();
+    }
+
+    public function check(TestCheckRequest $request){
+
+        $test = Test::with('questions.answers')->findOrFail($request->test_id);
+
+        $trueAnswers = 0;
+
+        foreach($request->answers as $key=>$answerR){
+            foreach ($test->questions as $question):
+                if( $key == $question->id ){
+                    foreach($question->answers as $answer):
+                        if($answerR == $answer->id){
+
+                           if($answer->trusted){
+                               $trueAnswers++;
+                           }
+
+                        }
+                    endforeach;
+                }
+            endforeach;
+        }
+
+        $begin = TestBegin::where('test_key', $request->test_key)->first();
+        if(!$begin->result_count){
+            $begin->result_count = $trueAnswers;
+            $begin->questions_count = $test->questions->count();
+            $begin->save();
+        }
+        return redirect()->route('tests.begin',$begin->test_key);
 
     }
 }
