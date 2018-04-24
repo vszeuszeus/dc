@@ -14,8 +14,3 @@ yarn-error.log
 /access.log
 /error.log
 /.env
-/public/js/app.js
-/public/css/app.css
-/public/css/admin.css
-/public/js/admin.js
-/public/mix-manifest.json
