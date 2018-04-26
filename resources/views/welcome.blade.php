@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="">
 
-    <title>Центр образования и воспитания</title>
+    <title>Дискретная математика для всех</title>
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/index.css') }}" rel="stylesheet">
@@ -21,7 +21,7 @@
 <div class="d-flex h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
         <div class="inner">
-            <h3 class="masthead-brand">ЦОиВ</h3>
+            <h3 class="masthead-brand">ДМ</h3>
             @if (Route::has('login'))
                 <nav class="nav nav-masthead justify-content-center">
                     @auth
@@ -36,7 +36,7 @@
     </header>
 
     <main role="main" class="inner cover">
-        <h1 class="cover-heading">Центр образования и воспитания</h1>
+        <h1 class="cover-heading">Дискретная математика для всех</h1>
         <p class="lead">Конкурсы | Олимпиады | Викторины | Конференции</p>
     </main>
 
