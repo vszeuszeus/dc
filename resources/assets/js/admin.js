@@ -83,7 +83,7 @@ if ($("#lectures").length > 0) {
             titleField: "",
             createdAtField: "",
             categoryField: "",
-            searchCaption: "Укажите параметры поиска для зароса!",
+            searchCaption: "Укажите параметры поиска для запроса!",
             searchCaptionClases: "alert alert-info",
             finalCaption: "",
             categories: backToFront.categories,
@@ -225,7 +225,7 @@ if ($("#tests").length > 0) {
             titleField: "",
             createdAtField: "",
             categoryField: "",
-            searchCaption: "Укажите параметры поиска для зароса!",
+            searchCaption: "Укажите параметры поиска для запроса!",
             searchCaptionClases: "alert alert-info",
             finalCaption: "",
             categories: backToFront.categories
