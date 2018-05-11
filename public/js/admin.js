@@ -39044,15 +39044,16 @@ process.umask = function() { return 0; };
 /***/ "./node_modules/timers-browserify/main.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
+/* WEBPACK VAR INJECTION */(function(global) {var scope = this;
+var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
 };
 exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
 };
 exports.clearTimeout =
 exports.clearInterval = function(timeout) {
@@ -39067,7 +39068,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function() {};
 Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
+  this._clearFn.call(scope, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -85394,7 +85395,7 @@ if ($("#lectures").length > 0) {
             titleField: "",
             createdAtField: "",
             categoryField: "",
-            searchCaption: "Укажите параметры поиска для зароса!",
+            searchCaption: "Укажите параметры поиска для запроса!",
             searchCaptionClases: "alert alert-info",
             finalCaption: "",
             categories: backToFront.categories
@@ -85525,7 +85526,7 @@ if ($("#tests").length > 0) {
             titleField: "",
             createdAtField: "",
             categoryField: "",
-            searchCaption: "Укажите параметры поиска для зароса!",
+            searchCaption: "Укажите параметры поиска для запроса!",
             searchCaptionClases: "alert alert-info",
             finalCaption: "",
             categories: backToFront.categories

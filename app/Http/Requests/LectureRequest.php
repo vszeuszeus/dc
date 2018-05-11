@@ -27,7 +27,7 @@ class LectureRequest extends FormRequest
             'title' => 'required|unique:lectures,title,' .
                 (($this->route('lecture')) ? $this->route('lecture') : "NULL") . ',id|max:255|string',
             'lecture_category_id' => 'required|exists:lecture_categories,id|integer',
-            'body' => 'required|max:10000|string'
+            'body' => 'required|string'
         ];
     }
 }
