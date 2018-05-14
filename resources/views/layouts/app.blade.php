@@ -25,7 +25,7 @@
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                ЦОиВ
+                <img src="{{asset('images/logo.png')}}" alt="logo" width="30" height="30">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
