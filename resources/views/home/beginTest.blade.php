@@ -14,9 +14,11 @@
                     <form action="{{route('tests.check')}}" method="POST">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item active" aria-current="page"></li>
-                                <li class="breadcrumb-item active" aria-current="page">Лекция</li>
-                                <li class="breadcrumb-item active" aria-current="page">Тест</li>
+                                <li class="breadcrumb-item" aria-current="page"></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{$begin->test->testable->title}}</li>
+                                {{--@if($begin->test->testable_type === 'App\\Lecture')
+                                    <li class="breadcrumb-item active" aria-current="page">$begin->test->testable->title</li>
+                                @endif--}}
                             </ol>
                         </nav>
                         <div class="card-body">

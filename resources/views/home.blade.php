@@ -31,19 +31,24 @@
                                                 </div>
                                             </div>
                                             @if(!$category->lectures->count())
-                                                <button disabled href="{{route('home.beginTest', ['type' => 'LectureCategory', 'id' => $category->id])}}" type="button"
-                                                   class="btn btn-secondary">Итоговый тест</button>
+                                                <button disabled
+                                                        href="{{route('home.beginTest', ['type' => 'LectureCategory', 'id' => $category->id])}}"
+                                                        type="button"
+                                                        class="btn btn-secondary">Итоговый тест
+                                                </button>
                                             @else
-                                                <a href="{{route('home.beginTest', ['type' => 'LectureCategory', 'id' => $category->id])}}" type="button"
+                                                <a href="{{route('home.beginTest', ['type' => 'LectureCategory', 'id' => $category->id])}}"
+                                                   type="button"
                                                    class="btn btn-secondary">Итоговый тест</a>
                                             @endif
 
                                             @if($category->checkPassedTest())
                                                 <a disabled href="{{route('home.getCertificate', $category->id)}}"
-                                                        class="btn btn-secondary">Получить сертификат</a>
+                                                   class="btn btn-secondary">Получить сертификат</a>
                                             @else
                                                 <button disabled href="{{route('home.getCertificate', $category->id)}}"
-                                                        class="btn btn-secondary">Получить сертификат</button>
+                                                        class="btn btn-secondary">Получить сертификат
+                                                </button>
                                             @endif
                                         </div>
                                     </div>

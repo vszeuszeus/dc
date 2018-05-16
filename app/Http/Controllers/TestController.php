@@ -111,7 +111,7 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return json_encode(['result' => Test::findOrFail($id)->delete()]);
     }
 
     public function search(Request $request){
@@ -148,7 +148,7 @@ class TestController extends Controller
             ->where('user_id', Auth::user()->id)->firstOrFail();
 
         if(!$begin->result_count){
-            $begin->load('test.questions.answers');
+            $begin->load('test.questions.answers', 'test.testable');
             return view('home.beginTest', ['begin' => $begin]);
         }else{
             $begin->load('test.testable');

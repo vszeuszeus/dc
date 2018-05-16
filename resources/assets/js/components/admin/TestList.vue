@@ -14,7 +14,7 @@
                             <span v-else >Итоговый</span>
                         </div>
                         <div class="col-lg-3">
-                            <span>{{modelNow.testable.title}}</span>
+                            <span>{{(modelNow.testable.title) ? modelNow.testable.title : "Удален"}}</span>
                         </div>
                         <div class="col-lg-1">
                             <span>{{modelNow.questions.length}}</span>
