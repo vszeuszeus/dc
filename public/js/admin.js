@@ -73853,7 +73853,15 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-lg-3" }, [
-                      _c("span", [_vm._v(_vm._s(modelNow.testable.title))])
+                      _c("span", [
+                        _vm._v(
+                          _vm._s(
+                            modelNow.testable
+                              ? modelNow.testable.title
+                              : "Удален"
+                          )
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-lg-1" }, [
