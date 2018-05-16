@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Дискретная математика для всех</title>
 
     <!-- Scripts -->
     <script src="{{ mix('js/admin.js') }}" defer></script>

@@ -21,7 +21,9 @@
 <div class="d-flex h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
         <div class="inner">
-            <h3 class="masthead-brand">ДМ</h3>
+            <h3 class="masthead-brand">
+                <img src="{{asset('images/logo.png')}}" alt="logo" width="30" height="30">
+            </h3>
             @if (Route::has('login'))
                 <nav class="nav nav-masthead justify-content-center">
                     @auth
