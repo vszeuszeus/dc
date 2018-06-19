@@ -360,7 +360,15 @@ window.startAlert = function (vueObject, caption, type) {
 if ($('#bodyD').length > 0) {
     tinymce.init({
         selector: '#bodyD',
-        height: '400px'
+        language: 'ru',
+        height: 500,
+        theme: 'modern',
+        image_list: [
+            {title: 'My image 1', value: 'https://www.tinymce.com/my1.gif'},
+            {title: 'My image 2', value: 'http://www.moxiecode.com/my2.gif'}
+        ],
+        plugins: 'print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image imagetools link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern help',
+        toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat'
     })
 }
 

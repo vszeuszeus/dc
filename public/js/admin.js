@@ -39044,16 +39044,15 @@ process.umask = function() { return 0; };
 /***/ "./node_modules/timers-browserify/main.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var scope = this;
-var apply = Function.prototype.apply;
+/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
 exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 };
 exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
 };
 exports.clearTimeout =
 exports.clearInterval = function(timeout) {
@@ -39068,7 +39067,7 @@ function Timeout(id, clearFn) {
 }
 Timeout.prototype.unref = Timeout.prototype.ref = function() {};
 Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
+  this._clearFn.call(window, this._id);
 };
 
 // Does not start the time, just sets up the members needed.
@@ -85658,7 +85657,12 @@ window.startAlert = function (vueObject, caption, type) {
 if ($('#bodyD').length > 0) {
     tinymce.init({
         selector: '#bodyD',
-        height: '400px'
+        language: 'ru',
+        height: 500,
+        theme: 'modern',
+        image_list: [{ title: 'My image 1', value: 'https://www.tinymce.com/my1.gif' }, { title: 'My image 2', value: 'http://www.moxiecode.com/my2.gif' }],
+        plugins: 'print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image imagetools link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern help',
+        toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat'
     });
 }
 
