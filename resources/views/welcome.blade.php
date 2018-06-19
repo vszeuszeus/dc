@@ -44,8 +44,15 @@
 
     <footer class="mastfoot mt-auto">
         <div class="inner">
-            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                All rights reserved
+            <p>
+                Джандигулов Абдыгали Реджепович 
+                <a href="mailto:abeked@mail.ru">abeked@mail.ru</a>
+                <a href="tel:+77014862139">+7 (701) 486-21-39</a>
+            </p>
+            <p>
+                Тлепбай Камшат Баянкызы
+                <a href="mailto:shonkiiin@mail.ru">shonkiiin@mail.ru</a>
+                <a href="tel:+77078443548">+7 (707) 844-35-48</a>
             </p>
         </div>
     </footer>
