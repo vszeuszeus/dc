@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\LectureCategory;
+use App\Lecture;
 use App\Test;
 use App\Http\Requests\TestRequest;
 use App\TestBegin;
@@ -120,6 +121,7 @@ class TestController extends Controller
         $createdField = $request->created_at_field;
         $categoryField = $request->category_field;
 
+
         return Test::with('testable', 'questions')
             ->when($titleField, function($query) use ($titleField){
                 return $query->where('title', 'LIKE', '%'.$titleField.'%');
@@ -136,8 +138,21 @@ class TestController extends Controller
                 }
             })
             ->when($categoryField, function($query) use ($categoryField){
-                return $query->where('testable_id', $categoryField)
-                    ->where('testable_type', 'App\\LectureCategory');
+                return $query
+                    ->where([
+                        ['testable_id', $categoryField],
+                        ['testable_type', 'App\\LectureCategory']
+                    ])
+                    ->orWhere(function($query) use ($categoryField){
+                        return $query
+                            ->whereIn('testable_id', Lecture::where('lecture_category_id', $categoryField)
+                                ->get()
+                                ->map(function($item, $key){
+                                    return $item->id;
+                                }))
+                            ->where('testable_type', 'App\\Lecture')
+                            ;
+                    });
             })
             ->paginate(15);
     }
