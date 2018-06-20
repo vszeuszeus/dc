@@ -50,9 +50,8 @@
                                                 </button>
                                             @endif
                                         </div>
-                                    </div>
 
-                                    <div class="btn-group-vertical d-inline-flex d-sm-none" role="group">
+                                        <div class="btn-group-vertical d-inline-flex d-sm-none" role="group">
                                             <div class="btn-group" role="group">
                                                 <button id="btnGroupDrop1" type="button"
                                                         class="btn btn-secondary @if(!$category->lectures->count()) disabled @endif dropdown-toggle"
@@ -88,7 +87,9 @@
                                                 </button>
                                             @endif
                                         </div>
+
                                     </div>
+                                    
                                 </div>
                                 @endforeach
                         </div>
